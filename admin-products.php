@@ -56,9 +56,7 @@ $app->get("/admin/products/:idproduct", function($idproduct){
 	$page = new PageAdmin();
 
 	$page->setTpl("products-update", [
-
 		'product'=>$product->getValues()
-
 	]);
 
 });
@@ -77,7 +75,7 @@ $app->post("/admin/products/:idproduct", function($idproduct){
 
 	$product->setPhoto($_FILES["file"]);
 
-	header("Location: /admin/products");
+	header('Location: /admin/products');
 	exit;
 
 });
@@ -91,8 +89,8 @@ $app->get("/admin/products/:idproduct/delete", function($idproduct){
 	$product->get((int)$idproduct);
 
 	$product->delete();
-	
-	header("Location: /admin/products");
+
+	header('Location: /admin/products');
 	exit;
 
 });

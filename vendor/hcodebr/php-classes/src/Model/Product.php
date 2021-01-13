@@ -8,7 +8,8 @@ use \Hcode\Mailer;
 
 class Product extends Model {
 
-	public static function listAll () {
+	public static function listAll()
+	{
 
 		$sql = new Sql();
 
@@ -16,13 +17,28 @@ class Product extends Model {
 
 	}
 
-	public function save() {
+	public static function checkList($list) {
+
+		foreach ($list as &$row) {
+			
+			$p = new Product();
+
+			$p->setData($row);
+			$row = $p->getValues();
+
+		}
+
+		return $list;
+
+	}
+
+	public function save()
+	{
 
 		$sql = new Sql();
 
 		$results = $sql->select("CALL sp_products_save(:idproduct, :desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl)", array(
-
-			":idproduct"=>$this->getdesproduct(), 
+			":idproduct"=>$this->getidproduct(),
 			":desproduct"=>$this->getdesproduct(),
 			":vlprice"=>$this->getvlprice(),
 			":vlwidth"=>$this->getvlwidth(),
@@ -30,48 +46,49 @@ class Product extends Model {
 			":vllength"=>$this->getvllength(),
 			":vlweight"=>$this->getvlweight(),
 			":desurl"=>$this->getdesurl()
-
 		));
+
+		$this->setData($results[0]);
 
 	}
 
-	public function get($idproduct) {
+	public function get($idproduct)
+	{
 
 		$sql = new Sql();
 
 		$results = $sql->select("SELECT * FROM tb_products WHERE idproduct = :idproduct", [
-
 			':idproduct'=>$idproduct
-
 		]);
 
 		$this->setData($results[0]);
 
 	}
 
-	public function delete() {
+	public function delete()
+	{
 
 		$sql = new Sql();
 
 		$sql->query("DELETE FROM tb_products WHERE idproduct = :idproduct", [
-
 			':idproduct'=>$this->getidproduct()
-
 		]);
 
 	}
 
-	public function checkPhoto() {
+	public function checkPhoto()
+	{
 
-		if (file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 
-													"res" . DIRECTORY_SEPARATOR . 
-													"site" . DIRECTORY_SEPARATOR . 
-													"img" . DIRECTORY_SEPARATOR . 
-													"products" . DIRECTORY_SEPARATOR . 
-													$this->getidproduct() . "jpg"
-												)) {
+		if (file_exists(
+			$_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 
+			"res" . DIRECTORY_SEPARATOR . 
+			"site" . DIRECTORY_SEPARATOR . 
+			"img" . DIRECTORY_SEPARATOR . 
+			"products" . DIRECTORY_SEPARATOR . 
+			$this->getidproduct() . ".jpg"
+			)) {
 
-			$url = "/res/site/img/products/" . $this->getidproduct() . "jpg";
+			$url = "/res/site/img/products/" . $this->getidproduct() . ".jpg";
 
 		} else {
 
@@ -83,7 +100,8 @@ class Product extends Model {
 
 	}
 
-	public function getValues() {
+	public function getValues()
+	{
 
 		$this->checkPhoto();
 
@@ -93,43 +111,37 @@ class Product extends Model {
 
 	}
 
-	public function setPhoto($file) {
+	public function setPhoto($file)
+	{
 
-		$extension = explode('.', $file["name"]);
-
+		$extension = explode('.', $file['name']);
 		$extension = end($extension);
 
 		switch ($extension) {
-			
-			case 'jpg':
-			case 'jpeg':
 
-				$image = imagecreatefromjpeg($file["tmp_name"]);
-
-			break;
-			
-			case 'gif':
-
-				$image = imagecreatefromgif($file["tmp_name"]);
-
+			case "jpg":
+			case "jpeg":
+			$image = imagecreatefromjpeg($file["tmp_name"]);
 			break;
 
-			case 'png':
+			case "gif":
+			$image = imagecreatefromgif($file["tmp_name"]);
+			break;
 
-				$image = imagecreatefrompng($file["tmp_name"]);
-
+			case "png":
+			$image = imagecreatefrompng($file["tmp_name"]);
 			break;
 
 		}
 
-		$dest = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . 
-											"res" . DIRECTORY_SEPARATOR . 
-											"site" . DIRECTORY_SEPARATOR . 
-											"img" . DIRECTORY_SEPARATOR . 
-											"products" . DIRECTORY_SEPARATOR . 
-											$this->getidproduct() . "jpg";
+		$dist = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 
+			"res" . DIRECTORY_SEPARATOR . 
+			"site" . DIRECTORY_SEPARATOR . 
+			"img" . DIRECTORY_SEPARATOR . 
+			"products" . DIRECTORY_SEPARATOR . 
+			$this->getidproduct() . ".jpg";
 
-		imagejpeg($image, $dest);
+		imagejpeg($image, $dist);
 
 		imagedestroy($image);
 
