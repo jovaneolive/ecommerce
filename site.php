@@ -151,7 +151,6 @@ $app->post("/cart/freight", function() {
 
 });
 
-<<<<<<< HEAD
 $app->get("/checkout", function(){
 
 	User::verifyLogin(false);
@@ -209,6 +208,4 @@ $app->get("/logout", function(){
 
 });
 
-=======
->>>>>>> 3640e7d8d5fa5b23292a76be7055f5964921e5a1
 ?>
