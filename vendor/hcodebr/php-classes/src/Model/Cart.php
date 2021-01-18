@@ -16,7 +16,7 @@ class Cart extends Model {
 
 		$cart = new Cart();
 
-		if (isset($_SESSION[Cart::SESSION]) && (int)$_SESSION[Cart::SESSION]['idcart'] > 0){ //se sim, significa que o carrinho ja foi inserido no banco e foi criada a sessao
+		if (isset($_SESSION[Cart::SESSION]) && (int)$_SESSION[Cart::SESSION]['idcart'] > 0) { //se sim, significa que o carrinho ja foi inserido no banco e foi criada a sessao
 
 			$cart->get((int)$_SESSION[Cart::SESSION]['idcart']);
 
