@@ -65,9 +65,9 @@ class Cart extends Model {
 		$sql = new Sql();
 
 		$results = $sql->select("SELECT * FROM tb_carts WHERE dessessionid = :dessessionid", [
-
+			
 			':dessessionid'=>session_id()
-
+		
 		]);
 
 		if (count($results) > 0) {
