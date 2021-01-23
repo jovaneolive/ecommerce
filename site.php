@@ -190,8 +190,8 @@ $app->get("/checkout", function(){
 	$page->setTpl("checkout", [
 		'cart'=>$cart->getValues(),
 		'address'=>$address->getValues(),
-		'products'=>$cart->getProducts(),
-		'error'=>Address::getMsgError()
+		'products'=>$cart->getProducts()
+		//'error'=>Address::getMsgError()
 	]);
 
 });
@@ -291,7 +291,7 @@ $app->post("/register", function() {
 
 	$user->save();
 
-	User::Login($_POST['email'], $_POST['password']);
+	User::login($_POST['email'], $_POST['password']);
 
 	header('Location: /checkout');
 	exit();
